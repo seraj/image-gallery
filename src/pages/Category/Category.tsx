@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { serialize } from "../../utils/helpers";
+import { useDispatch } from "react-redux";
 import Img from "react-cool-img";
 import { useParams } from "react-router-dom";
+import { setSelectedCatId } from "../../store/modules/category";
+import { serialize } from "../../utils/helpers";
 import { Button } from "../../components";
 import { Props, ParamsType, DataType } from "./Category.types";
 import * as Styled from "./Category.styled";
@@ -10,9 +12,9 @@ import * as Styled from "./Category.styled";
 const Category = React.memo<Props>(() => {
   const [params, setParams] = useState<ParamsType>({ limit: 10, page: 0 });
   const [loading, setLoading] = useState<boolean>(false);
-  const [loadMorePost, setLoadMorePost] = useState<boolean>(false);
   const [data, setData] = useState<DataType[]>([]);
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   const handleGetCatData = (params: ParamsType) => {
     axios
@@ -29,6 +31,8 @@ const Category = React.memo<Props>(() => {
   useEffect(() => {
     if (!!id) {
       setData([]);
+      dispatch(setSelectedCatId(Number(id) || 0));
+
       setParams({ limit: 10, category_ids: id, page: 0 });
     }
   }, [id]);
