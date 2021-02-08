@@ -10,7 +10,11 @@ import { Props, ParamsType, DataType } from "./Category.types";
 import * as Styled from "./Category.styled";
 
 const Category = React.memo<Props>(() => {
-  const [params, setParams] = useState<ParamsType>({ limit: 10, page: 0 });
+  const [params, setParams] = useState<ParamsType>({
+    limit: 10,
+    page: 0,
+    size: "full",
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<DataType[]>([]);
   const { id } = useParams();
@@ -33,7 +37,7 @@ const Category = React.memo<Props>(() => {
       setData([]);
       dispatch(setSelectedCatId(Number(id) || 0));
 
-      setParams({ limit: 10, category_ids: id, page: 0 });
+      setParams({ limit: 10, category_ids: id, page: 0, size: "full" });
     }
   }, [id]);
 
